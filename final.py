@@ -73,7 +73,7 @@ KBar_dic['open']=np.array(KBar_open_list)
 #KBar_dic['open'].shape  ## (1596,)
 #KBar_dic['open'].size   ##  1596
 
-KBar_dic['product'] = np.repeat('tsmc', KBar_dic['open'].size)
+#KBar_dic['product'] = np.repeat('tsmc', KBar_dic['open'].size)
 #KBar_dic['product'].size   ## 1596
 #KBar_dic['product'][0]      ## 'tsmc'
 
