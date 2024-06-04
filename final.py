@@ -45,7 +45,10 @@ df_original = pd.read_pickle('2313.TW.pkl')
 #df.tail()
 #type(df['time'][0])
 
-
+# Sample data (replace this with your actual data)
+dates = pd.date_range(start='2023-06-04', end='2024-06-04')
+prices = np.random.randint(50, 150, size=len(dates))
+df_original = pd.DataFrame({'time': dates, 'close': prices})
 ##### 選擇資料區間
 st.subheader("選擇開始與結束的日期, 區間:2023-06-04 至 2024-06-04")
 start_date = st.text_input('選擇開始日期 (日期格式: 2023-06-04)', '2023-06-04')
@@ -324,18 +327,14 @@ def MACD(df, n_fast, n_slow, n_signal):
     MACD_diff = MACD - MACD_signal
     return MACD, MACD_signal, MACD_diff
 
-# Sample data (replace this with your actual data)
-dates = pd.date_range(start='2023-06-04', end='2024-06-04')
-prices = np.random.randint(50, 150, size=len(dates))
-df = pd.DataFrame({'time': dates, 'close': prices})
-
 # Calculate MACD
 n_fast = 12
 n_slow = 26
 n_signal = 9
 macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
+
 with st.expander("MACD"):
-# Plot MACD
+    # Plot MACD
     fig, ax = plt.subplots(figsize=(14, 7))
     ax.plot(df['time'], macd, label='MACD', color='blue')
     ax.plot(df['time'], signal, label='MACD Signal', color='red')
@@ -343,11 +342,8 @@ with st.expander("MACD"):
     ax.set_title('MACD')
     ax.legend()
 
-# Display the plot in Streamlit
+    # Display the plot in Streamlit
     st.pyplot(fig)
-
-
-
 
 ### Bollinger Bands
 def bollinger_bands(df, window, num_std):
@@ -364,18 +360,13 @@ def bollinger_bands(df, window, num_std):
     lower_band = rolling_mean - (rolling_std * num_std)
     return rolling_mean, upper_band, lower_band
 
-# Sample data (replace this with your actual data)
-dates = pd.date_range(start='2023-06-04', end='2024-06-04')
-prices = np.random.randint(50, 150, size=len(dates))
-df = pd.DataFrame({'time': dates, 'close': prices})
-
 # Calculate Bollinger Bands
 window = 20
 num_std = 2
 rolling_mean, upper_band, lower_band = bollinger_bands(df, window, num_std)
 
 with st.expander("Bollinger Bands"):
-# Plot Bollinger Bands
+    # Plot Bollinger Bands
     fig, ax = plt.subplots(figsize=(14, 7))
     ax.plot(df['time'], df['close'], label='Close Price', color='black')
     ax.plot(df['time'], rolling_mean, label='Rolling Mean', color='blue')
@@ -385,11 +376,8 @@ with st.expander("Bollinger Bands"):
     ax.set_title('Bollinger Bands')
     ax.legend()
 
-# Display the plot in Streamlit
+    # Display the plot in Streamlit
     st.pyplot(fig)
-
-
-
 
 ###KDJ
 def KDJ(df, n=9, m1=3, m2=3):
@@ -411,7 +399,6 @@ def KDJ(df, n=9, m1=3, m2=3):
     return df
 
 # Sample data (replace this with your actual data)
-dates = pd.date_range(start='2023-06-04', end='2024-06-04')
 high_prices = np.random.randint(100, 200, size=len(dates))
 low_prices = np.random.randint(50, 100, size=len(dates))
 close_prices = np.random.randint(80, 150, size=len(dates))
@@ -421,7 +408,7 @@ df = pd.DataFrame({'time': dates, 'high': high_prices, 'low': low_prices, 'close
 df = KDJ(df)
 
 with st.expander("KDJ"):
-# Plot KDJ
+    # Plot KDJ
     fig, ax = plt.subplots(figsize=(14, 7))
     ax.plot(df['time'], df['K'], label='%K', color='blue')
     ax.plot(df['time'], df['D'], label='%D', color='red')
@@ -429,5 +416,5 @@ with st.expander("KDJ"):
     ax.set_title('KDJ')
     ax.legend()
 
-# Display the plot in Streamlit
+    # Display the plot in Streamlit
     st.pyplot(fig)
