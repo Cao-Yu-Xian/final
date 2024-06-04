@@ -334,14 +334,16 @@ n_slow = 26
 n_signal = 9
 macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
 with st.expander("MACD"):
-    # Plot MACD
-    plt.figure(figsize=(14, 7))
-    plt.plot(df['time'], macd, label='MACD', color='blue')
-    plt.plot(df['time'], signal, label='MACD Signal', color='red')
-    plt.bar(df['time'], macd_diff, width=0.7, color='gray', label='MACD Difference')
-    plt.title('MACD')
-    plt.legend()
-    st.pyplot()
+   # Plot MACD
+fig, ax = plt.subplots(figsize=(14, 7))
+ax.plot(df['Date'], macd, label='MACD', color='blue')
+ax.plot(df['Date'], signal, label='MACD Signal', color='red')
+ax.bar(df['Date'], macd_diff, width=0.7, color='gray', label='MACD Difference')
+ax.set_title('MACD')
+ax.legend()
+
+# Display the plot in Streamlit
+st.pyplot(fig)
 
 
 
