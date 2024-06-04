@@ -48,7 +48,7 @@ df_original = pd.read_pickle('2313.TW.pkl')
 # Sample data (replace this with your actual data)
 dates = pd.date_range(start='2023-06-04', end='2024-06-04')
 prices = np.random.randint(50, 150, size=len(dates))
-df_original = pd.DataFrame({'time': dates, 'close': prices})
+
 ##### 選擇資料區間
 st.subheader("選擇開始與結束的日期, 區間:2023-06-04 至 2024-06-04")
 start_date = st.text_input('選擇開始日期 (日期格式: 2023-06-04)', '2023-06-04')
