@@ -305,6 +305,9 @@ with st.expander("K線圖, 長短 RSI"):
 
 
 
+
+
+#### MACD
 def MACD(df, n_fast, n_slow, n_signal):
     """
     Calculate MACD, MACD Signal and MACD difference
@@ -345,4 +348,41 @@ with st.expander("MACD"):
 
 
 
+
+###
+def bollinger_bands(df, window, num_std):
+    """
+    Calculate Bollinger Bands
+    :param df: pandas.DataFrame
+    :param window: int, rolling window size
+    :param num_std: int, number of standard deviations
+    :return: pandas.DataFrame
+    """
+    rolling_mean = df['close'].rolling(window=window).mean()
+    rolling_std = df['close'].rolling(window=window).std()
+    upper_band = rolling_mean + (rolling_std * num_std)
+    lower_band = rolling_mean - (rolling_std * num_std)
+    return rolling_mean, upper_band, lower_band
+
+# Sample data (replace this with your actual data)
+dates = pd.date_range(start='2023-06-04', end='2024-06-04')
+prices = np.random.randint(50, 150, size=len(dates))
+df = pd.DataFrame({'time': dates, 'close': prices})
+
+# Calculate Bollinger Bands
+window = 20
+num_std = 2
+rolling_mean, upper_band, lower_band = bollinger_bands(df, window, num_std)
+
+with st.expander("Bollinger Bands"):
+# Plot Bollinger Bands
+  plt.figure(figsize=(14, 7))
+  plt.plot(df['time'], df['close'], label='Close Price', color='black')
+  plt.plot(df['time'], rolling_mean, label='Rolling Mean', color='blue')
+  plt.plot(df['time'], upper_band, label='Upper Band', color='red', linestyle='--')
+  plt.plot(df['time'], lower_band, label='Lower Band', color='green', linestyle='--')
+  plt.fill_between(df['time'], lower_band, upper_band, color='lightgray')
+  plt.title('Bollinger Bands')
+  plt.legend()
+  plt.show()
 
