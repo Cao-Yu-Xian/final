@@ -341,7 +341,7 @@ with st.expander("MACD"):
     plt.bar(df['time'], macd_diff, width=0.7, color='gray', label='MACD Difference')
     plt.title('MACD')
     plt.legend()
-    plt.show()
+    st.pyplot.show()
 
 
 
