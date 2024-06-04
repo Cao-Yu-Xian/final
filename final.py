@@ -333,6 +333,7 @@ n_fast = 12
 n_slow = 26
 n_signal = 9
 macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
+with st.expander("MACD"):
 # Plot MACD
 plt.figure(figsize=(14, 7))
 plt.plot(df['time'], macd, label='MACD', color='blue')
