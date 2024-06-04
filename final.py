@@ -11,7 +11,7 @@ import datetime
 import pandas as pd
 import streamlit as st 
 import streamlit.components.v1 as stc 
-
+import matplotlib.pyplot as plt
 
 ###### (1) 開始設定 ######
 html_temp = """
