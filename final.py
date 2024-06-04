@@ -306,7 +306,6 @@ with st.expander("K線圖, 長短 RSI"):
 
 
 
-with st.expander("K線圖, 移動平均線"):
   def MACD(df, n_fast, n_slow, n_signal):
      """
      Calculate MACD, MACD Signal and MACD difference
@@ -333,7 +332,7 @@ with st.expander("K線圖, 移動平均線"):
      n_slow = 26
      n_signal = 9
      macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
-
+with st.expander("MACD"):
     # Plot MACD
      fig, ax = plt.subplots(figsize=(14, 7))
      ax.plot(df['time'], macd, label='MACD', color='blue')
