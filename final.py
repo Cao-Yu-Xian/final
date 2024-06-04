@@ -307,6 +307,40 @@ with st.expander("K線圖, 長短 RSI"):
 
 
 
+def MACD(df, n_fast, n_slow, n_signal):
+    """
+    Calculate MACD, MACD Signal and MACD difference
+    :param df: pandas.DataFrame
+    :param n_fast: int, fast moving average window
+    :param n_slow: int, slow moving average window
+    :param n_signal: int, signal line window
+    :return: pandas.DataFrame
+    """
+    EMAfast = df['close'].ewm(span=n_fast, min_periods=n_slow).mean()
+    EMAslow = df['close'].ewm(span=n_slow, min_periods=n_slow).mean()
+    MACD = EMAfast - EMAslow
+    MACD_signal = MACD.ewm(span=n_signal, min_periods=n_signal).mean()
+    MACD_diff = MACD - MACD_signal
+    return MACD, MACD_signal, MACD_diff
+
+# Sample data (replace this with your actual data)
+dates = pd.date_range(start='2023-06-04', end='2024-06-04')
+prices = np.random.randint(50, 150, size=len(dates))
+df = pd.DataFrame({'time': dates, 'close': prices})
+
+# Calculate MACD
+n_fast = 12
+n_slow = 26
+n_signal = 9
+macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
+# Plot MACD
+plt.figure(figsize=(14, 7))
+plt.plot(df['time'], macd, label='MACD', color='blue')
+plt.plot(df['time'], signal, label='MACD Signal', color='red')
+plt.bar(df['time'], macd_diff, width=0.7, color='gray', label='MACD Difference')
+plt.title('MACD')
+plt.legend()
+plt.show()
 
 
 
