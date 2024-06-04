@@ -420,7 +420,7 @@ df = pd.DataFrame({'time': dates, 'high': high_prices, 'low': low_prices, 'close
 # Calculate KDJ
 df = KDJ(df)
 
-with st.expander("Bollinger Bands"):
+with st.expander("KDJ"):
 # Plot KDJ
     fig, ax = plt.subplots(figsize=(14, 7))
     ax.plot(df['time'], df['K'], label='%K', color='blue')
