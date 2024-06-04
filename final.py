@@ -16,14 +16,12 @@ import matplotlib.pyplot as plt
 ###### (1) 開始設定 ######
 html_temp = """
 		<div style="background-color:#3872fb;padding:10px;border-radius:10px">
-		<h1 style="color:white;text-align:center;">華通股票 </h1>
-		<h2 style="color:white;text-align:center;"> (2313.TW) </h2>
+		<h1 style="color:white;text-align:center;">金融資料視覺化呈現 (金融看板) </h1>
+		<h2 style="color:white;text-align:center;">Financial Dashboard </h2>
 		</div>
 		"""
 stc.html(html_temp)
 
-#df = pd.read_excel("kbars_台積電_1100701_1100708_2.xlsx")
-#df = pd.read_excel("kbars_2330_2022-07-01-2022-07-31.xlsx")
 
 # ## 讀取 excel 檔
 df_original = pd.read_excel("2313.TW.xlsx")
@@ -34,16 +32,6 @@ df_original.to_pickle('2313.TW.pkl')
 ## 读取Pickle文件
 df_original = pd.read_pickle('2313.TW.pkl')
 
-
-#df.columns  ## Index(['Unnamed: 0', 'time', 'open', 'low', 'high', 'close', 'volume','amount'], dtype='object')
-#df_original = df_original.drop('Unnamed: 0',axis=1)
-#df.columns  ## Index(['time', 'open', 'low', 'high', 'close', 'volume', 'amount'], dtype='object')
-#df['time']
-#type(df['time'])  ## pandas.core.series.Series
-#df['time'][11]
-#df.head()
-#df.tail()
-#type(df['time'][0])
 
 
 
@@ -71,7 +59,7 @@ KBar_dic['open']=np.array(KBar_open_list)
 #KBar_dic['open'].shape  ## (1596,)
 #KBar_dic['open'].size   ##  1596
 
-#KBar_dic['product'] = np.repeat('tsmc', KBar_dic['open'].size)
+KBar_dic['product'] = np.repeat('tsmc', KBar_dic['open'].size)
 #KBar_dic['product'].size   ## 1596
 #KBar_dic['product'][0]      ## 'tsmc'
 
