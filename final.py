@@ -329,3 +329,38 @@ with st.expander("MACD"):
 
     # Display the plot in Streamlit
     st.pyplot(fig)
+
+
+### Bollinger Bands
+def bollinger_bands(df, window, num_std):
+    """
+    Calculate Bollinger Bands
+    :param df: pandas.DataFrame
+    :param window: int, rolling window size
+    :param num_std: int, number of standard deviations
+    :return: pandas.DataFrame
+    """
+    rolling_mean = df['close'].rolling(window=window).mean()
+    rolling_std = df['close'].rolling(window=window).std()
+    upper_band = rolling_mean + (rolling_std * num_std)
+    lower_band = rolling_mean - (rolling_std * num_std)
+    return rolling_mean, upper_band, lower_band
+
+# Calculate Bollinger Bands
+window = 20
+num_std = 2
+rolling_mean, upper_band, lower_band = bollinger_bands(df, window, num_std)
+
+with st.expander("Bollinger Bands"):
+    # Plot Bollinger Bands
+    fig, ax = plt.subplots(figsize=(14, 7))
+    ax.plot(df['time'], df['close'], label='Close Price', color='black')
+    ax.plot(df['time'], rolling_mean, label='Rolling Mean', color='blue')
+    ax.plot(df['time'], upper_band, label='Upper Band', color='red', linestyle='--')
+    ax.plot(df['time'], lower_band, label='Lower Band', color='green', linestyle='--')
+    ax.fill_between(df['time'], lower_band, upper_band, color='lightgray')
+    ax.set_title('Bollinger Bands')
+    ax.legend()
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
