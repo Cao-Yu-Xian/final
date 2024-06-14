@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 ###### (1) 開始設定 ######
 html_temp = """
 		<div style="background-color:#3872fb;padding:10px;border-radius:10px">
-		<h1 style="color:white;text-align:center;">金融資料視覺化呈現 (金融看板) </h1>
-		<h2 style="color:white;text-align:center;">Financial Dashboard </h2>
+		<h1 style="color:white;text-align:center;">華通股票 </h1>
+		<h2 style="color:white;text-align:center;">2313</h2>
 		</div>
 		"""
 stc.html(html_temp)
