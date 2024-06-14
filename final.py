@@ -12,6 +12,8 @@ import pandas as pd
 import streamlit as st 
 import streamlit.components.v1 as stc 
 import matplotlib.pyplot as plt
+import yfinance as yf
+
 
 ###### (1) 開始設定 ######
 html_temp = """
@@ -294,8 +296,7 @@ with st.expander("K線圖, 長短 RSI"):
 
 
 
-
-#### MACD
+# 定義MACD計算函數
 def MACD(df, n_fast, n_slow, n_signal):
     """
     Calculate MACD, MACD Signal and MACD difference
@@ -312,101 +313,34 @@ def MACD(df, n_fast, n_slow, n_signal):
     MACD_diff = MACD - MACD_signal
     return MACD, MACD_signal, MACD_diff
 
-# Calculate MACD
-n_fast = 12
-n_slow = 26
-n_signal = 9
-macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
+# Streamlit應用程式
+st.title('MACD Stock Analysis')
 
-with st.expander("MACD"):
-    # Plot MACD
-     fig, ax = plt.subplots(figsize=(14, 7))
-     ax.plot(df['time'], macd, label='MACD', color='blue')
-     ax.plot(df['time'], signal, label='MACD Signal', color='red')
-     ax.bar(df['time'], macd_diff, width=0.7, color='gray', label='MACD Difference')
-     ax.set_title('MACD')
-     ax.legend()
+# 股票代號輸入
+ticker = st.text_input('Enter Stock Ticker', 'AAPL')
 
-    # Display the plot in Streamlit
-     st.pyplot(fig)
+# 日期輸入
+start_date = st.date_input('Start Date', pd.to_datetime('2023-06-04'))
+end_date = st.date_input('End Date', pd.to_datetime('2024-06-04'))
 
-### Bollinger Bands
-def bollinger_bands(df, window, num_std):
-    """
-    Calculate Bollinger Bands
-    :param df: pandas.DataFrame
-    :param window: int, rolling window size
-    :param num_std: int, number of standard deviations
-    :return: pandas.DataFrame
-    """
-    rolling_mean = df['close'].rolling(window=window).mean()
-    rolling_std = df['close'].rolling(window=window).std()
-    upper_band = rolling_mean + (rolling_std * num_std)
-    lower_band = rolling_mean - (rolling_std * num_std)
-    return rolling_mean, upper_band, lower_band
+if ticker:
+    # 獲取股票數據
+    df = yf.download(ticker, start=start_date, end=end_date)
 
-# Calculate Bollinger Bands
-window = 20
-num_std = 2
-rolling_mean, upper_band, lower_band = bollinger_bands(df, window, num_std)
+    # 計算MACD
+    n_fast = 12
+    n_slow = 26
+    n_signal = 9
+    macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
 
-with st.expander("Bollinger Bands"):
-    # Plot Bollinger Bands
-     fig, ax = plt.subplots(figsize=(14, 7))
-     ax.plot(df['time'], df['close'], label='Close Price', color='black')
-     ax.plot(df['time'], rolling_mean, label='Rolling Mean', color='blue')
-     ax.plot(df['time'], upper_band, label='Upper Band', color='red', linestyle='--')
-     ax.plot(df['time'], lower_band, label='Lower Band', color='green', linestyle='--')
-     ax.fill_between(df['time'], lower_band, upper_band, color='lightgray')
-     ax.set_title('Bollinger Bands')
-     ax.legend()
+    with st.expander("MACD"):
+        # 繪製MACD圖表
+        fig, ax = plt.subplots(figsize=(14, 7))
+        ax.plot(df.index, macd, label='MACD', color='blue')
+        ax.plot(df.index, signal, label='MACD Signal', color='red')
+        ax.bar(df.index, macd_diff, width=0.7, color='gray', label='MACD Difference')
+        ax.set_title('MACD')
+        ax.legend()
 
-    # Display the plot in Streamlit
-     st.pyplot(fig)
-
-###KDJ
-def KDJ(df, n=9, m1=3, m2=3):
-    """
-    Calculate KDJ indicator
-    :param df: pandas.DataFrame
-    :param n: int, default 9, number of days for %K
-    :param m1: int, default 3, number of days for %D1
-    :param m2: int, default 3, number of days for %D2
-    :return: pandas.DataFrame
-    """
-    low_list = df['low'].rolling(window=n).min()
-    high_list = df['high'].rolling(window=n).max()
-    
-    rsv = (df['close'] - low_list) / (high_list - low_list) * 100
-    df['K'] = rsv.ewm(com=m1-1).mean()
-    df['D'] = df['K'].ewm(com=m2-1).mean()
-    df['J'] = 3 * df['K'] - 2 * df['D']
-    return df
-
-# Sample data (replace this with your actual data)
-high_prices = np.random.randint(100, 200, size=len(dates))
-low_prices = np.random.randint(50, 100, size=len(dates))
-close_prices = np.random.randint(80, 150, size=len(dates))
-df = pd.DataFrame({'time': dates, 'high': high_prices, 'low': low_prices, 'close': close_prices})
-
-# Calculate KDJ
-df = KDJ(df)
-
-with st.expander("KDJ"):
-    # Plot KDJ
-     fig, ax = plt.subplots(figsize=(14, 7))
-     ax.plot(df['time'], df['K'], label='%K', color='blue')
-     ax.plot(df['time'], df['D'], label='%D', color='red')
-     ax.plot(df['time'], df['J'], label='%J', color='green')
-     ax.set_title('KDJ')
-     ax.legend()
-
-
-
-# Sample data (replace this with your actual data)
-dates = pd.date_range(start='2023-06-04', end='2024-06-04')
-prices = np.random.randint(50, 150, size=len(dates))
-
-    # Display the plot in Streamlit
-     st.pyplot(fig)
-
+        # 在Streamlit中顯示圖表
+        st.pyplot(fig)
