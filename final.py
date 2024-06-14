@@ -12,7 +12,7 @@ import pandas as pd
 import streamlit as st 
 import streamlit.components.v1 as stc 
 import matplotlib.pyplot as plt
-import yfinance as yf
+
 
 
 ###### (1) 開始設定 ######
@@ -296,51 +296,3 @@ with st.expander("K線圖, 長短 RSI"):
 
 
 
-# 定義MACD計算函數
-def MACD(df, n_fast, n_slow, n_signal):
-    """
-    Calculate MACD, MACD Signal and MACD difference
-    :param df: pandas.DataFrame
-    :param n_fast: int, fast moving average window
-    :param n_slow: int, slow moving average window
-    :param n_signal: int, signal line window
-    :return: pandas.DataFrame
-    """
-    EMAfast = df['close'].ewm(span=n_fast, min_periods=n_slow).mean()
-    EMAslow = df['close'].ewm(span=n_slow, min_periods=n_slow).mean()
-    MACD = EMAfast - EMAslow
-    MACD_signal = MACD.ewm(span=n_signal, min_periods=n_signal).mean()
-    MACD_diff = MACD - MACD_signal
-    return MACD, MACD_signal, MACD_diff
-
-# Streamlit應用程式
-st.title('MACD Stock Analysis')
-
-# 股票代號輸入
-ticker = st.text_input('Enter Stock Ticker', 'AAPL')
-
-# 日期輸入
-start_date = st.date_input('Start Date', pd.to_datetime('2023-06-04'))
-end_date = st.date_input('End Date', pd.to_datetime('2024-06-04'))
-
-if ticker:
-    # 獲取股票數據
-    df = yf.download(ticker, start=start_date, end=end_date)
-
-    # 計算MACD
-    n_fast = 12
-    n_slow = 26
-    n_signal = 9
-    macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
-
-    with st.expander("MACD"):
-        # 繪製MACD圖表
-        fig, ax = plt.subplots(figsize=(14, 7))
-        ax.plot(df.index, macd, label='MACD', color='blue')
-        ax.plot(df.index, signal, label='MACD Signal', color='red')
-        ax.bar(df.index, macd_diff, width=0.7, color='gray', label='MACD Difference')
-        ax.set_title('MACD')
-        ax.legend()
-
-        # 在Streamlit中顯示圖表
-        st.pyplot(fig)
