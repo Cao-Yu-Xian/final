@@ -320,15 +320,15 @@ macd, signal, macd_diff = MACD(df, n_fast, n_slow, n_signal)
 
 with st.expander("MACD"):
     # Plot MACD
-    fig, ax = plt.subplots(figsize=(14, 7))
-    ax.plot(df['time'], macd, label='MACD', color='blue')
-    ax.plot(df['time'], signal, label='MACD Signal', color='red')
-    ax.bar(df['time'], macd_diff, width=0.7, color='gray', label='MACD Difference')
-    ax.set_title('MACD')
-    ax.legend()
+     fig, ax = plt.subplots(figsize=(14, 7))
+     ax.plot(df['time'], macd, label='MACD', color='blue')
+     ax.plot(df['time'], signal, label='MACD Signal', color='red')
+     ax.bar(df['time'], macd_diff, width=0.7, color='gray', label='MACD Difference')
+     ax.set_title('MACD')
+     ax.legend()
 
     # Display the plot in Streamlit
-    st.pyplot(fig)
+     st.pyplot(fig)
 
 ### Bollinger Bands
 def bollinger_bands(df, window, num_std):
@@ -352,17 +352,17 @@ rolling_mean, upper_band, lower_band = bollinger_bands(df, window, num_std)
 
 with st.expander("Bollinger Bands"):
     # Plot Bollinger Bands
-    fig, ax = plt.subplots(figsize=(14, 7))
-    ax.plot(df['time'], df['close'], label='Close Price', color='black')
-    ax.plot(df['time'], rolling_mean, label='Rolling Mean', color='blue')
-    ax.plot(df['time'], upper_band, label='Upper Band', color='red', linestyle='--')
-    ax.plot(df['time'], lower_band, label='Lower Band', color='green', linestyle='--')
-    ax.fill_between(df['time'], lower_band, upper_band, color='lightgray')
-    ax.set_title('Bollinger Bands')
-    ax.legend()
+     fig, ax = plt.subplots(figsize=(14, 7))
+     ax.plot(df['time'], df['close'], label='Close Price', color='black')
+     ax.plot(df['time'], rolling_mean, label='Rolling Mean', color='blue')
+     ax.plot(df['time'], upper_band, label='Upper Band', color='red', linestyle='--')
+     ax.plot(df['time'], lower_band, label='Lower Band', color='green', linestyle='--')
+     ax.fill_between(df['time'], lower_band, upper_band, color='lightgray')
+     ax.set_title('Bollinger Bands')
+     ax.legend()
 
     # Display the plot in Streamlit
-    st.pyplot(fig)
+     st.pyplot(fig)
 
 ###KDJ
 def KDJ(df, n=9, m1=3, m2=3):
@@ -394,12 +394,12 @@ df = KDJ(df)
 
 with st.expander("KDJ"):
     # Plot KDJ
-    fig, ax = plt.subplots(figsize=(14, 7))
-    ax.plot(df['time'], df['K'], label='%K', color='blue')
-    ax.plot(df['time'], df['D'], label='%D', color='red')
-    ax.plot(df['time'], df['J'], label='%J', color='green')
-    ax.set_title('KDJ')
-    ax.legend()
+     fig, ax = plt.subplots(figsize=(14, 7))
+     ax.plot(df['time'], df['K'], label='%K', color='blue')
+     ax.plot(df['time'], df['D'], label='%D', color='red')
+     ax.plot(df['time'], df['J'], label='%J', color='green')
+     ax.set_title('KDJ')
+     ax.legend()
 
 
 
@@ -408,5 +408,5 @@ dates = pd.date_range(start='2023-06-04', end='2024-06-04')
 prices = np.random.randint(50, 150, size=len(dates))
 
     # Display the plot in Streamlit
-    st.pyplot(fig)
+     st.pyplot(fig)
 
